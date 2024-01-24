@@ -14,7 +14,15 @@ const initialState: IProduct  = {
 const productSlice = createSlice({
     name:'product',
     initialState,
-    reducers:{},
+    reducers:{
+        toggleState: (state)=>{
+            state.status = !state.status;
+        },
+        setPriceRange:(state, action: PayloadAction<number>)=>{
+            state.priceRange = action.payload;
+        } 
+    },
 })
 
+export const {toggleState, setPriceRange} = productSlice.actions;
 export default productSlice.reducer;

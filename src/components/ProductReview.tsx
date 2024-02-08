@@ -1,19 +1,12 @@
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Button } from './ui/button';
+import { Textarea } from './ui/textarea';
+import { FiSend } from 'react-icons/fi';
 import {
   useGetCommentQuery,
   usePostCommentMutation,
 } from '@/redux/features/products/productApi';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { FiSend } from 'react-icons/fi';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Button } from './ui/button';
-import { Textarea } from './ui/textarea';
-
-// const dummyComments = [
-//   'Bhalo na',
-//   'Ki shob ghori egula??',
-//   'Eta kono product holo ??',
-//   '200 taka dibo, hobe ??',
-// ];
 
 interface IProps {
   id: string;
@@ -24,20 +17,25 @@ export default function ProductReview({ id }: IProps) {
 
   const { data } = useGetCommentQuery(id, {
     refetchOnMountOrArgChange: true,
-    pollingInterval: 5000,
+    pollingInterval: 30000,
   });
-
   const [postComment, { isLoading, isError, isSuccess }] =
     usePostCommentMutation();
 
+  console.log(isLoading);
+  console.log(isError);
+  console.log(isSuccess);
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log(inputValue);
+
     const options = {
       id: id,
       data: { comment: inputValue },
     };
-    postComment(options);
 
+    postComment(options);
     setInputValue('');
   };
 

@@ -24,8 +24,8 @@ const productApi = api.injectEndpoints({
 });
 
 export const {
-  useGetProductsQuery,
-  useSingleProductQuery,
-  usePostCommentMutation,
   useGetCommentQuery,
+  useGetProductsQuery,
+  usePostCommentMutation,
+  useSingleProductQuery,
 } = productApi;

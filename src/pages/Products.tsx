@@ -4,33 +4,21 @@ import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/components/ui/use-toast';
 import { useGetProductsQuery } from '@/redux/features/products/productApi';
-
 import {
   setPriceRange,
   toggleState,
 } from '@/redux/features/products/productSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { IProduct } from '@/types/globalTypes';
+import { useEffect, useState } from 'react';
 
 export default function Products() {
-  // const [data, setData] = useState<IProduct[]>([]);
-  // useEffect(() => {
-  //   fetch('./data.json')
-  //     .then((res) => res.json())
-  //     .then((data) => setData(data));
-  // }, []);
-  const { data, error, isLoading } = useGetProductsQuery(undefined);
+  const { data, isLoading, error } = useGetProductsQuery(undefined);
 
   const { toast } = useToast();
 
   const { priceRange, status } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
-  //! Dummy Data
-
-  // const status = true;
-  // const priceRange = 100;
-
-  //! **
 
   const handleSlider = (value: number[]) => {
     dispatch(setPriceRange(value[0]));
@@ -40,10 +28,13 @@ export default function Products() {
 
   if (status) {
     productsData = data?.data?.filter(
-      (item) => item.status === true && item.price < priceRange
+      (item: { status: boolean; price: number }) =>
+        item.status === true && item.price < priceRange
     );
   } else if (priceRange > 0) {
-    productsData = data?.data?.filter((item) => item.price < priceRange);
+    productsData = data?.data?.filter(
+      (item: { price: number }) => item.price < priceRange
+    );
   } else {
     productsData = data?.data;
   }
@@ -54,9 +45,7 @@ export default function Products() {
         <div>
           <h1 className="text-2xl uppercase">Availability</h1>
           <div
-            onClick={() => {
-              dispatch(toggleState());
-            }}
+            onClick={() => dispatch(toggleState())}
             className="flex items-center space-x-2 mt-3"
           >
             <Switch id="in-stock" />
